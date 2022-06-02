@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Елена Бокова](https://up.htmlacademy.ru/javascript/26/user/1977001).
-* Наставник: `Неизвестно`.
+* Наставник: [Алексей Хабиров](https://htmlacademy.ru/profile/alex_khab).
 
 ---
 
