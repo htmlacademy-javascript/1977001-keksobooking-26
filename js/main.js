@@ -61,7 +61,6 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
 ];
 
-
 //Случайное целое число
 const getRandomInteger = (min, max) => {
   if (min > max) {
@@ -75,7 +74,6 @@ const getRandomInteger = (min, max) => {
   const num = Math.round(Math.random() * (max - min) + min);
   return num;
 };
-
 
 //Случайное число с плавающей точкой
 const getRandomFloat = (min, max, digits) => {
@@ -94,10 +92,8 @@ const getRandomFloat = (min, max, digits) => {
   return +num.toFixed(digits);
 };
 
-
 //Случайный элемент массива
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
-
 
 //Массив случайной длины
 const getRandomList = (elements) => {
@@ -110,24 +106,21 @@ const getRandomList = (elements) => {
       randomList.push(random);
     }
   }
+
   return randomList;
 };
-
-
-//Строка адреса аватарки
-const getAvatar = (count) => count > 9? `img/avatars/user${count}.png` : `img/avatars/user${`0${count}`}.png`;
-
 
 //Создание объявления
 const createAd = (id) => {
   const lat = getRandomFloat(LAT_FROM, LAT_TO, 5);
   const lng = getRandomFloat(LNG_FROM, LNG_TO, 5);
 
+  const formatted = id > 9 ? id : `0${id}`;
+
   return {
     author: {
-      avatar: getAvatar(id),
+      avatar: `img/avatars/user${formatted}.png`,
     },
-
     offer: {
       title: getRandomArrayElement(TITLES),
       address: `${lat}, ${lng}`,
@@ -141,22 +134,22 @@ const createAd = (id) => {
       description: getRandomArrayElement(DESCRIPTION),
       photos: getRandomList(PHOTOS),
     },
-
     location: {
-      lat: lat,
-      lng: lng,
+      lat,
+      lng,
     },
   };
 };
 
-
 //Создание массива объявлений
-const createAdList = (count) => {
+const createAds = (count) => {
   const ads = [];
+
   for (let i = 1; i <= count; i++) {
     ads.push(createAd(i));
   }
+
   return ads;
 };
 
-createAdList(SIMILAR_AD_COUNT);
+createAds(SIMILAR_AD_COUNT);
