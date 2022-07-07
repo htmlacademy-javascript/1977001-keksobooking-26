@@ -1,7 +1,6 @@
 import {getRandomInteger, getRandomFloat, getRandomArrayElement, getRandomList} from './util.js';
 
 //Константы
-const SIMILAR_AD_COUNT = 10;
 const LAT_FROM = 35.65000;
 const LAT_TO = 35.70000;
 const LNG_FROM = 139.70000;
@@ -94,7 +93,7 @@ const createAd = (id) => {
 };
 
 // Создание массива объявлений
-const createAds = (id = SIMILAR_AD_COUNT) => {
+const createAds = (id) => {
   const ads = [];
 
   for (let i = 1; i <= id; i++) {

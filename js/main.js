@@ -1,4 +1,1 @@
-import './data.js';
-import {createAds} from './data.js';
-
-createAds();
+import './card.js';
