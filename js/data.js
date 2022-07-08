@@ -62,7 +62,7 @@ const PHOTOS = [
 ];
 
 //Создание объявления
-const createAd = (id) => {
+const createAd = (id = getRandomInteger(1, 10)) => {
   const lat = getRandomFloat(LAT_FROM, LAT_TO, 5);
   const lng = getRandomFloat(LNG_FROM, LNG_TO, 5);
 
@@ -92,15 +92,4 @@ const createAd = (id) => {
   };
 };
 
-// Создание массива объявлений
-const createAds = (id) => {
-  const ads = [];
-
-  for (let i = 1; i <= id; i++) {
-    ads.push(createAd(i));
-  }
-
-  return ads;
-};
-
-export {createAds};
+export {createAd};
