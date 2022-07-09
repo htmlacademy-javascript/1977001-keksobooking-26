@@ -1,4 +1,8 @@
-import {renderCard} from './card.js';
+import { createAds } from './data.js';
+import { renderCard } from './card.js';
 
 const mapCanvas = document.querySelector('#map-canvas');
-mapCanvas.appendChild(renderCard());
+const ads = createAds();
+const card = renderCard(ads[0]);
+
+mapCanvas.appendChild(card);

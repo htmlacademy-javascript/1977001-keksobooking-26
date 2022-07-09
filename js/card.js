@@ -1,4 +1,3 @@
-import { createAd } from './data.js';
 
 const typeDictionary = {
   palace: 'Дворец',
@@ -12,10 +11,9 @@ const cardTemplate = document.querySelector('#card')
   .content
   .querySelector('.popup');
 
-const renderCard = () => {
+const renderCard = (similarAd) => {
 
-  const similarAd = createAd();
-  const {author, offer} = similarAd;
+  const { author, offer } = similarAd;
 
   const cardElement = cardTemplate.cloneNode(true);
 
@@ -31,7 +29,7 @@ const renderCard = () => {
   cardElement.querySelector('.popup__title').textContent = offer.title;
   cardElement.querySelector('.popup__text--address').textContent = offer.address;
   adPrice.innerHTML = '';
-  adPrice.insertAdjacentHTML('afterBegin',`${offer.price} <span>₽/ночь</span>`);
+  adPrice.insertAdjacentHTML('afterBegin', `${offer.price} <span>₽/ночь</span>`);
 
   cardElement.querySelector('.popup__type').textContent = typeDictionary[offer.type];
   cardElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей.`;
@@ -59,11 +57,11 @@ const renderCard = () => {
   if (offer.photos.length > 0) {
     adPhotos.innerHTML = '';
 
-    for (let i = 0; i < offer.photos.length; i++) {
+    offer.photos.forEach((photo) => {
       const newPhoto = adPhoto.cloneNode(true);
-      newPhoto.src = offer.photos[i];
+      newPhoto.src = photo;
       adPhotos.appendChild(newPhoto);
-    }
+    });
 
   } else {
     adPhotos.classList.add('hidden');
@@ -72,4 +70,4 @@ const renderCard = () => {
   return cardElement;
 };
 
-export {renderCard};
+export { renderCard };

@@ -5,6 +5,7 @@ const LAT_FROM = 35.65000;
 const LAT_TO = 35.70000;
 const LNG_FROM = 139.70000;
 const LNG_TO = 139.80000;
+const SIMILAR_AD_COUNT = 10;
 
 //Варианты заголовка
 const TITLES = [
@@ -62,7 +63,7 @@ const PHOTOS = [
 ];
 
 //Создание объявления
-const createAd = (id = getRandomInteger(1, 10)) => {
+const createAd = (id) => {
   const lat = getRandomFloat(LAT_FROM, LAT_TO, 5);
   const lng = getRandomFloat(LNG_FROM, LNG_TO, 5);
 
@@ -92,4 +93,16 @@ const createAd = (id = getRandomInteger(1, 10)) => {
   };
 };
 
+// Создание массива объявлений
+const createAds = (id = SIMILAR_AD_COUNT) => {
+  const ads = [];
+
+  for (let i = 1; i <= id; i++) {
+    ads.push(createAd(i));
+  }
+
+  return ads;
+};
+
+export {createAds};
 export {createAd};
