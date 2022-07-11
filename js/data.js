@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomFloat, getRandomArrayElement, getRandomList} from './util.js';
+import { getRandomInteger, getRandomFloat, getRandomArrayElement, getRandomList } from './util.js';
 
 //Константы
 const LAT_FROM = 35.65000;
@@ -104,5 +104,4 @@ const createAds = (id = SIMILAR_AD_COUNT) => {
   return ads;
 };
 
-export {createAds};
-export {createAd};
+export { createAds, createAd };
