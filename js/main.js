@@ -9,5 +9,5 @@ const card = renderCard(ads[0]);
 mapCanvas.appendChild(card);
 
 disablePage();
-//activateFilters();
-//activateForm();
+activateFilters();
+activateForm();

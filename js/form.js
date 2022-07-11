@@ -5,10 +5,10 @@ const mapFiltersElements = document.querySelectorAll('.map__filters select, .map
 const isDisabled = true;
 
 const toggleElements = (elements, state) => {
-  elements.forEach(element => {
+  elements.forEach((element) => {
     element.disabled = state;
   });
-}
+};
 
 const disablePage = () => {
   adForm.classList.add('ad-form--disabled');
