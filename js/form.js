@@ -46,9 +46,10 @@ const pristine = new Pristine(adForm, {
   errorTextTag: 'span',
 });
 
+//Количество мест
 const validateCapacity = () => capacityOptions[parseInt(roomsField.value, 10)].includes(parseInt(capacityField.value, 10));
 
-function getCapacityErrorMessage() {
+const getCapacityErrorMessage = () => {
   switch (parseInt(roomsField.value, 10)) {
     case 1:
       return `оптимально для ${parseInt(roomsField.value, 10)} гостя`;
@@ -57,7 +58,7 @@ function getCapacityErrorMessage() {
     default:
       return `оптимально для ${parseInt(roomsField.value, 10)} гостей`;
   }
-}
+};
 
 const onRoomChange = () => {
   pristine.validate(capacityField);
