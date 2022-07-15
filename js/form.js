@@ -3,15 +3,14 @@ const adFormElements = document.querySelectorAll('.ad-form fieldset');
 const mapFilters = document.querySelector('.map__filters');
 const mapFiltersElements = document.querySelectorAll('.map__filters select, .map__filters fieldset');
 const isDisabled = true;
-const roomsField = adForm.querySelector('[name="rooms"]');
-const capacityField = adForm.querySelector('[name="capacity"]');
-let roomNumber = adForm.querySelector('#room_number > option:checked').value;
+const roomsField = adForm.querySelector('#room_number');
+const capacityField = adForm.querySelector('#capacity');
 
-const capacityOption = {
-  '1': [1],
-  '2': [1, 2],
-  '3': [1, 2, 3],
-  '100': [0]
+const capacityOptions = {
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3],
+  100: [0]
 };
 
 //Активация
@@ -38,7 +37,6 @@ const activateFilters = () => {
   toggleElements(mapFiltersElements, !isDisabled);
 };
 
-
 //Валидация
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
@@ -48,46 +46,32 @@ const pristine = new Pristine(adForm, {
   errorTextTag: 'span',
 });
 
-// Такой был сначала вариант, чтобы не создавать массив, но подумала, что тебе он точно не понравится)))
-// function validateСapacity (value) {
-//   if (parseInt(roomNumber) === 100) {
-//     return parseInt(capacity.value) === 0;
-//   } else {
-//     return parseInt(value) <= parseInt(roomNumber) && parseInt(value) !==0;
-//   }
-// }
-
-function validateСapacity() {
-  return capacityOption[parseInt(roomsField.value, 10)].includes(parseInt(capacityField.value, 10));
-}
+const validateCapacity = () => capacityOptions[parseInt(roomsField.value, 10)].includes(parseInt(capacityField.value, 10));
 
 function getCapacityErrorMessage() {
-  switch (parseInt(roomNumber, 10)) {
+  switch (parseInt(roomsField.value, 10)) {
     case 1:
-      return `оптимально для ${parseInt(roomNumber, 10)} гостя`;
+      return `оптимально для ${parseInt(roomsField.value, 10)} гостя`;
     case 100:
       return 'размещение гостей невозможно';
     default:
-      return `оптимально для ${parseInt(roomNumber, 10)} гостей`;
+      return `оптимально для ${parseInt(roomsField.value, 10)} гостей`;
   }
 }
 
-pristine.addValidator(capacityField, validateСapacity, getCapacityErrorMessage);
-
-function onRoomChange () {
-  roomNumber = adForm.querySelector('#room_number > option:checked').value;
+const onRoomChange = () => {
   pristine.validate(capacityField);
-}
+};
 
-adForm
-  .querySelectorAll('[name="rooms"]')
-  .forEach((item) => item.addEventListener('change', onRoomChange));
-
-
-adForm.addEventListener('submit', (evt) => {
+const onFormSubmit = (evt) => {
   evt.preventDefault();
   pristine.validate();
-});
+};
 
+const initValidation = () => {
+  pristine.addValidator(capacityField, validateCapacity, getCapacityErrorMessage);
+  roomsField.addEventListener('change', onRoomChange);
+  adForm.addEventListener('submit', onFormSubmit);
+};
 
-export { disablePage, activateForm, activateFilters };
+export { disablePage, activateForm, activateFilters, initValidation };

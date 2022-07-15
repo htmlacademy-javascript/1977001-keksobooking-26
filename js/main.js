@@ -1,6 +1,6 @@
 import { createAds } from './data.js';
 import { renderCard } from './card.js';
-import { disablePage, activateForm, activateFilters } from './form.js';
+import { disablePage, activateForm, activateFilters, initValidation } from './form.js';
 
 
 const mapCanvas = document.querySelector('#map-canvas');
@@ -12,3 +12,4 @@ mapCanvas.appendChild(card);
 disablePage();
 activateFilters();
 activateForm();
+initValidation();
