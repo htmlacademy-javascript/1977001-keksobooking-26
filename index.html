@@ -103,7 +103,8 @@
           type="text"
           placeholder="Милая, уютная квартирка в центре Токио"
           required
-          minlength="30" maxlength="100" data-pristine-required-message="Обязательное поле"
+          minlength="30" maxlength="100"
+          data-pristine-required-message="Обязательное поле"
           data-pristine-minlength-message="Минимальная длина 30 символов"
           data-pristine-maxlength-message="Максимальная длина 100 символов">
         </fieldset>
@@ -119,8 +120,8 @@
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="type">Тип жилья</label>
           <select id="type" name="type">
-            <option value="bungalow">Бунгало</option>
-            <option value="flat" selected>Квартира</option>
+            <option value="bungalow" selected>Бунгало</option>
+            <option value="flat">Квартира</option>
             <option value="hotel">Отель</option>
             <option value="house">Дом</option>
             <option value="palace">Дворец</option>
@@ -133,12 +134,14 @@
           name="price"
           type="number"
           placeholder="5000"
+          min="0"
           max="100000"
           required
+          data-pristine-max-message="Максимальная сумма 100000 руб."
           data-pristine-required-message="Обязательное поле">
           <div class="ad-form__slider"></div>
         </fieldset>
-        <fieldset class="ad-form__element ad-form__element--time">
+        <fieldset class="ad-form__element ad-form__element--time" id="ad-form__element--time">
           <label class="ad-form__label" for="timein">Время заезда и выезда</label>
           <select id="timein" name="timein">
             <option value="12:00" selected>После 12</option>

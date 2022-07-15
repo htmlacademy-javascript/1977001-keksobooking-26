@@ -3,8 +3,22 @@ const adFormElements = document.querySelectorAll('.ad-form fieldset');
 const mapFilters = document.querySelector('.map__filters');
 const mapFiltersElements = document.querySelectorAll('.map__filters select, .map__filters fieldset');
 const isDisabled = true;
+const timeInField = adForm.querySelector('#timein');
+const timeOutField = adForm.querySelector('#timeout');
+const typeField = adForm.querySelector('#type');
+const priceField = adForm.querySelector('#price');
 const roomsField = adForm.querySelector('#room_number');
 const capacityField = adForm.querySelector('#capacity');
+const checkField = adForm.querySelector('#ad-form__element--time');
+
+
+const typePrices = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+};
 
 const capacityOptions = {
   1: [1],
@@ -46,6 +60,25 @@ const pristine = new Pristine(adForm, {
   errorTextTag: 'span',
 });
 
+//Стоимость
+const validatePrice = () => parseInt(priceField.value, 10) >= typePrices[typeField.value];
+
+const getPriceErrorMessage = () => `Минимальная сумма для данного вида жилья ${typePrices[typeField.value]} руб.`;
+
+const onTypeChange = () => {
+  pristine.validate(priceField);
+};
+
+//Заезд-Выезд
+const onCheckingChange = (evt) => {
+  if (evt.target.name === 'timein') {
+    timeOutField.value = timeInField.value;
+  }
+  else if (evt.target.name === 'timeout') {
+    timeInField.value = timeOutField.value;
+  }
+};
+
 //Количество мест
 const validateCapacity = () => capacityOptions[parseInt(roomsField.value, 10)].includes(parseInt(capacityField.value, 10));
 
@@ -70,8 +103,14 @@ const onFormSubmit = (evt) => {
 };
 
 const initValidation = () => {
+  pristine.addValidator(priceField, validatePrice, getPriceErrorMessage);
+  typeField.addEventListener('change', onTypeChange);
+
   pristine.addValidator(capacityField, validateCapacity, getCapacityErrorMessage);
   roomsField.addEventListener('change', onRoomChange);
+
+  checkField.addEventListener('change', onCheckingChange);
+
   adForm.addEventListener('submit', onFormSubmit);
 };
 
