@@ -1,3 +1,5 @@
+import { mainPinMarker } from './map.js';
+
 const adForm = document.querySelector('.ad-form');
 const adFormElements = document.querySelectorAll('.ad-form fieldset');
 const mapFilters = document.querySelector('.map__filters');
@@ -10,7 +12,7 @@ const priceField = adForm.querySelector('#price');
 const roomsField = adForm.querySelector('#room_number');
 const capacityField = adForm.querySelector('#capacity');
 const checkField = adForm.querySelector('#ad-form__element--time');
-
+const addressField = adForm.querySelector('#address');
 
 const typePrices = {
   bungalow: 0,
@@ -26,6 +28,7 @@ const capacityOptions = {
   3: [1, 2, 3],
   100: [0]
 };
+
 
 //Активация
 const toggleElements = (elements, state) => {
@@ -44,6 +47,8 @@ const disablePage = () => {
 const activateForm = () => {
   adForm.classList.remove('ad-form--disabled');
   toggleElements(adFormElements, !isDisabled);
+  const { lat, lng } = mainPinMarker.getLatLng();
+  addressField.placeholder = `${lat}, ${lng}`;
 };
 
 const activateFilters = () => {
@@ -60,6 +65,14 @@ const pristine = new Pristine(adForm, {
   errorTextTag: 'span',
 });
 
+//Адрес
+addressField.readOnly = true;
+
+mainPinMarker.on('moveend', (evt) => {
+  const { lat, lng } = evt.target.getLatLng();
+  addressField.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+});
+
 //Стоимость
 const validatePrice = () => parseInt(priceField.value, 10) >= typePrices[typeField.value];
 
@@ -71,12 +84,8 @@ const onTypeChange = () => {
 
 //Заезд-Выезд
 const onCheckingChange = (evt) => {
-  if (evt.target.name === 'timein') {
-    timeOutField.value = timeInField.value;
-  }
-  else if (evt.target.name === 'timeout') {
-    timeInField.value = timeOutField.value;
-  }
+  timeOutField.value = evt.target.value;
+  timeInField.value = evt.target.value;
 };
 
 //Количество мест

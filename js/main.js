@@ -1,15 +1,18 @@
 import { createAds } from './data.js';
 import { renderCard } from './card.js';
 import { disablePage, activateForm, activateFilters, initValidation } from './form.js';
-
-
-const mapCanvas = document.querySelector('#map-canvas');
-const ads = createAds();
-const card = renderCard(ads[0]);
-
-mapCanvas.appendChild(card);
+import { isMapLoaded, initMap, makePins } from './map.js';
 
 disablePage();
-activateFilters();
-activateForm();
-initValidation();
+initMap();
+
+if (isMapLoaded) {
+  activateFilters();
+  activateForm();
+  initValidation();
+}
+
+const ads = createAds();
+ads.forEach((ad) => {
+  makePins(ad.location.lat, ad.location.lng, renderCard(ad));
+});
