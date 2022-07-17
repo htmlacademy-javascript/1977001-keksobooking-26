@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="leaflet/leaflet.css">
+  <link rel="stylesheet" href="nouislider/nouislider.css">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -140,7 +141,7 @@
           required
           data-pristine-max-message="Максимальная сумма 100000 руб."
           data-pristine-required-message="Обязательное поле">
-          <div class="ad-form__slider"></div>
+          <div class="ad-form__slider" id="ad-form__slider"></div>
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--time" id="ad-form__element--time">
           <label class="ad-form__label" for="timein">Время заезда и выезда</label>
@@ -274,6 +275,7 @@
   </template>
 
   <script src="leaflet/leaflet.js"></script>
+  <script src="nouislider/nouislider.js"></script>
   <script async src="pristine/pristine.min.js" type="text/javascript"></script>
   <script src="js/main.js" type="module"></script>
 </body>

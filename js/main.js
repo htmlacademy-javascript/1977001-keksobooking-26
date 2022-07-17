@@ -1,6 +1,6 @@
 import { createAds } from './data.js';
 import { renderCard } from './card.js';
-import { disablePage, activateForm, activateFilters, initValidation } from './form.js';
+import { disablePage, activateForm, activateFilters, initValidation, setFormAddress } from './form.js';
 import { isMapLoaded, initMap, makePins } from './map.js';
 
 disablePage();
@@ -10,6 +10,7 @@ if (isMapLoaded) {
   activateFilters();
   activateForm();
   initValidation();
+  setFormAddress();
 }
 
 const ads = createAds();

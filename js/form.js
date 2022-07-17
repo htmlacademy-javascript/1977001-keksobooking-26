@@ -1,4 +1,5 @@
 import { mainPinMarker } from './map.js';
+import { addSlider } from './slider.js';
 
 const adForm = document.querySelector('.ad-form');
 const adFormElements = document.querySelectorAll('.ad-form fieldset');
@@ -13,6 +14,7 @@ const roomsField = adForm.querySelector('#room_number');
 const capacityField = adForm.querySelector('#capacity');
 const checkField = adForm.querySelector('#ad-form__element--time');
 const addressField = adForm.querySelector('#address');
+const sliderElement = adForm.querySelector('#ad-form__slider');
 
 const typePrices = {
   bungalow: 0,
@@ -28,7 +30,6 @@ const capacityOptions = {
   3: [1, 2, 3],
   100: [0]
 };
-
 
 //Активация
 const toggleElements = (elements, state) => {
@@ -49,11 +50,22 @@ const activateForm = () => {
   toggleElements(adFormElements, !isDisabled);
   const { lat, lng } = mainPinMarker.getLatLng();
   addressField.placeholder = `${lat}, ${lng}`;
+  addSlider(sliderElement, priceField);
 };
 
 const activateFilters = () => {
   mapFilters.classList.remove('map__filters--disabled');
   toggleElements(mapFiltersElements, !isDisabled);
+};
+
+//Адрес
+const setFormAddress = () => {
+  addressField.readOnly = true;
+
+  mainPinMarker.on('moveend', (evt) => {
+    const { lat, lng } = evt.target.getLatLng();
+    addressField.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+  });
 };
 
 //Валидация
@@ -63,14 +75,6 @@ const pristine = new Pristine(adForm, {
   errorTextParent: 'ad-form__element',
   errorTextClass: 'ad-form__element--error-text',
   errorTextTag: 'span',
-});
-
-//Адрес
-addressField.readOnly = true;
-
-mainPinMarker.on('moveend', (evt) => {
-  const { lat, lng } = evt.target.getLatLng();
-  addressField.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 });
 
 //Стоимость
@@ -123,4 +127,4 @@ const initValidation = () => {
   adForm.addEventListener('submit', onFormSubmit);
 };
 
-export { disablePage, activateForm, activateFilters, initValidation };
+export { disablePage, activateForm, activateFilters, initValidation, setFormAddress };
