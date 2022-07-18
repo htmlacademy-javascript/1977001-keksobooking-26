@@ -1,3 +1,5 @@
+import { addSlider } from './slider.js';
+
 const adForm = document.querySelector('.ad-form');
 const adFormElements = document.querySelectorAll('.ad-form fieldset');
 const mapFilters = document.querySelector('.map__filters');
@@ -10,7 +12,8 @@ const priceField = adForm.querySelector('#price');
 const roomsField = adForm.querySelector('#room_number');
 const capacityField = adForm.querySelector('#capacity');
 const checkField = adForm.querySelector('#ad-form__element--time');
-
+const addressField = adForm.querySelector('#address');
+const sliderElement = adForm.querySelector('#ad-form__slider');
 
 const typePrices = {
   bungalow: 0,
@@ -44,12 +47,16 @@ const disablePage = () => {
 const activateForm = () => {
   adForm.classList.remove('ad-form--disabled');
   toggleElements(adFormElements, !isDisabled);
+  addSlider(sliderElement, priceField);
 };
 
 const activateFilters = () => {
   mapFilters.classList.remove('map__filters--disabled');
   toggleElements(mapFiltersElements, !isDisabled);
 };
+
+//Адрес
+addressField.readOnly = true;
 
 //Валидация
 const pristine = new Pristine(adForm, {
@@ -66,17 +73,14 @@ const validatePrice = () => parseInt(priceField.value, 10) >= typePrices[typeFie
 const getPriceErrorMessage = () => `Минимальная сумма для данного вида жилья ${typePrices[typeField.value]} руб.`;
 
 const onTypeChange = () => {
+  priceField.placeholder = typePrices[typeField.value];
   pristine.validate(priceField);
 };
 
 //Заезд-Выезд
 const onCheckingChange = (evt) => {
-  if (evt.target.name === 'timein') {
-    timeOutField.value = timeInField.value;
-  }
-  else if (evt.target.name === 'timeout') {
-    timeInField.value = timeOutField.value;
-  }
+  timeOutField.value = evt.target.value;
+  timeInField.value = evt.target.value;
 };
 
 //Количество мест

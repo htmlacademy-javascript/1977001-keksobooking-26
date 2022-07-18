@@ -407,6 +407,11 @@ fieldset {
   margin-right: 14px;
 }
 
+.ad-form__element--error-text {
+  color: hsl(355, 74%, 38%);
+  font-size: smaller;
+}
+
 .ad-form__slider.noUi-target:not(#fake-id) {
   width: calc(100% - 20px);
   height: 5px;
