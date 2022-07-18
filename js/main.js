@@ -1,19 +1,7 @@
-import { createAds } from './data.js';
-import { renderCard } from './card.js';
-import { disablePage, activateForm, activateFilters, initValidation, setFormAddress } from './form.js';
-import { isMapLoaded, initMap, makePins } from './map.js';
+import { disablePage, initValidation, activateForm } from './form.js';
+import { initMap } from './map.js';
 
 disablePage();
+activateForm();
 initMap();
-
-if (isMapLoaded) {
-  activateFilters();
-  activateForm();
-  initValidation();
-  setFormAddress();
-}
-
-const ads = createAds();
-ads.forEach((ad) => {
-  makePins(ad.location.lat, ad.location.lng, renderCard(ad));
-});
+initValidation();

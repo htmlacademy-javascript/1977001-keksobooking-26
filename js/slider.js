@@ -5,7 +5,7 @@ const addSlider = (slider, field) => {
       min: 0,
       max: 100000,
     },
-    start: 5000,
+    start: 0,
     step: 1,
     connect: 'lower',
     format: {

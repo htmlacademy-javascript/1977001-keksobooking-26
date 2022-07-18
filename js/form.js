@@ -1,4 +1,3 @@
-import { mainPinMarker } from './map.js';
 import { addSlider } from './slider.js';
 
 const adForm = document.querySelector('.ad-form');
@@ -48,8 +47,6 @@ const disablePage = () => {
 const activateForm = () => {
   adForm.classList.remove('ad-form--disabled');
   toggleElements(adFormElements, !isDisabled);
-  const { lat, lng } = mainPinMarker.getLatLng();
-  addressField.placeholder = `${lat}, ${lng}`;
   addSlider(sliderElement, priceField);
 };
 
@@ -59,14 +56,7 @@ const activateFilters = () => {
 };
 
 //Адрес
-const setFormAddress = () => {
-  addressField.readOnly = true;
-
-  mainPinMarker.on('moveend', (evt) => {
-    const { lat, lng } = evt.target.getLatLng();
-    addressField.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-  });
-};
+addressField.readOnly = true;
 
 //Валидация
 const pristine = new Pristine(adForm, {
@@ -83,6 +73,7 @@ const validatePrice = () => parseInt(priceField.value, 10) >= typePrices[typeFie
 const getPriceErrorMessage = () => `Минимальная сумма для данного вида жилья ${typePrices[typeField.value]} руб.`;
 
 const onTypeChange = () => {
+  priceField.placeholder = typePrices[typeField.value];
   pristine.validate(priceField);
 };
 
@@ -127,4 +118,4 @@ const initValidation = () => {
   adForm.addEventListener('submit', onFormSubmit);
 };
 
-export { disablePage, activateForm, activateFilters, initValidation, setFormAddress };
+export { disablePage, activateForm, activateFilters, initValidation };
