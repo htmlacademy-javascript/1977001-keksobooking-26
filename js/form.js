@@ -1,4 +1,7 @@
+import { sendData } from './api.js';
+import { setAddress, resetMainPinMarker } from './map.js';
 import { addSlider } from './slider.js';
+import { isEscapeKey } from './util.js';
 
 const adForm = document.querySelector('.ad-form');
 const adFormElements = document.querySelectorAll('.ad-form fieldset');
@@ -14,6 +17,16 @@ const capacityField = adForm.querySelector('#capacity');
 const checkField = adForm.querySelector('#ad-form__element--time');
 const addressField = adForm.querySelector('#address');
 const sliderElement = adForm.querySelector('#ad-form__slider');
+const submitButton = adForm.querySelector('.ad-form__submit');
+const resetButton = adForm.querySelector('.ad-form__reset');
+
+const success = document.querySelector('#success')
+  .content
+  .querySelector('.success');
+
+const error = document.querySelector('#error')
+  .content
+  .querySelector('.error');
 
 const typePrices = {
   bungalow: 0,
@@ -101,9 +114,81 @@ const onRoomChange = () => {
   pristine.validate(capacityField);
 };
 
+//Отправка формы
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Сохраняем...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const onSuccessEscKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeSuccessMessage();
+  }
+};
+
+const onErrorEscKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeErrorMessage();
+  }
+};
+
+const showSuccessMessage = () => {
+  document.body.append(success);
+  document.addEventListener('click', () => { closeSuccessMessage(success); });
+  document.addEventListener('keydown', onSuccessEscKeydown);
+};
+
+const showErrorMessage = () => {
+  document.body.append(error);
+  document.addEventListener('click', () => { closeErrorMessage(error); });
+  document.addEventListener('keydown', onErrorEscKeydown);
+};
+
+function closeSuccessMessage() {
+  success.remove();
+}
+
+function closeErrorMessage() {
+  error.remove();
+}
+
+const formReset = () => {
+  adForm.reset();
+  resetMainPinMarker();
+  setAddress();
+};
+
+resetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  formReset();
+});
+
 const onFormSubmit = (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  const formData = new FormData(evt.target);
+  const isValid = pristine.validate();
+  if (isValid) {
+    blockSubmitButton();
+    sendData(
+      () => {
+        showSuccessMessage();
+        unblockSubmitButton();
+        formReset();
+      },
+      () => {
+        showErrorMessage();
+        unblockSubmitButton();
+      },
+      formData
+    );
+  }
 };
 
 const initValidation = () => {

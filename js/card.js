@@ -20,7 +20,7 @@ const renderCard = (similarAd) => {
   const description = cardElement.querySelector('.popup__description');
   const adFeatures = offer.features;
   const featuresContainer = cardElement.querySelector('.popup__features');
-  const featureList = featuresContainer.querySelectorAll('.popup__feature');
+  const features = featuresContainer.querySelectorAll('.popup__feature');
   const adPhotos = cardElement.querySelector('.popup__photos');
   const adPhoto = cardElement.querySelector('.popup__photo').cloneNode(true);
   const adPrice = cardElement.querySelector('.popup__text--price');
@@ -41,20 +41,20 @@ const renderCard = (similarAd) => {
     description.classList.add('hidden');
   }
 
-  if (featureList.length > 0) {
-    featureList.forEach((featureListItem) => {
+  if (adFeatures) {
+    features.forEach((featuresItem) => {
       const isNecessary = adFeatures.some(
-        (adFeature) => featureListItem.classList.contains(`popup__feature--${adFeature}`),
+        (adFeature) => featuresItem.classList.contains(`popup__feature--${adFeature}`),
       );
       if (isNecessary) {
-        featureListItem.remove();
+        featuresItem.remove();
       }
     });
   } else {
     featuresContainer.classList.add('hidden');
   }
 
-  if (offer.photos.length > 0) {
+  if (offer.photos) {
     adPhotos.innerHTML = '';
 
     offer.photos.forEach((photo) => {
