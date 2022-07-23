@@ -1,50 +1,27 @@
-//Случайное целое число
-const getRandomInteger = (min, max) => {
-  if (min > max) {
-    const swap = min;
-    min = max;
-    max = swap;
-  }
-  if (min < 0) {
-    min = 0;
-  }
-  const num = Math.round(Math.random() * (max - min) + min);
-  return num;
+const ALERT_SHOW_TIME = 7000;
+
+const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = '100';
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = '0';
+  alertContainer.style.top = '0';
+  alertContainer.style.right = '0';
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '25px';
+  alertContainer.style.color = '#ffffff';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = '#a91925';
+
+  alertContainer.textContent = message;
+
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, ALERT_SHOW_TIME);
 };
 
-//Случайное число с плавающей точкой
-const getRandomFloat = (min, max, digits) => {
-  if (min === max) {
-    return +min.toFixed(digits);
-  }
-  if (min > max) {
-    const swap = min;
-    min = max;
-    max = swap;
-  }
-  if (min < 0) {
-    min = 0;
-  }
-  const num = Math.random() * (max - min) + min;
-  return +num.toFixed(digits);
-};
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
-//Случайный элемент массива
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
-
-//Массив случайной длины
-const getRandomList = (elements) => {
-  const randomList = [];
-  const count = getRandomInteger(1, elements.length);
-
-  for (let i = 0; i < count; i++) {
-    const random = getRandomArrayElement(elements);
-    if (!randomList.includes(random)) {
-      randomList.push(random);
-    }
-  }
-
-  return randomList;
-};
-
-export {getRandomInteger, getRandomFloat, getRandomArrayElement, getRandomList};
+export { showAlert, isEscapeKey };
