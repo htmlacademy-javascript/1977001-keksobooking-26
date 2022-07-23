@@ -12,6 +12,7 @@ const MAIN_PIN_SIZE = 52;
 const PIN_SIZE = 40;
 const MAP_TILE = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const MAP_ATTRIBUTE = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const ALERT_DOWNLOAD = 'Не удалось загрузить данные;';
 
 const map = L.map('map-canvas');
 
@@ -70,6 +71,13 @@ const onMarkerMove = (evt) => {
   addressField.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 };
 
+const onDataLoadSuccess = (data) => {
+  renderPins(data.slice(0, 10));
+  activateFilters();
+};
+
+const onDataLoadError = () => showAlert(ALERT_DOWNLOAD);
+
 const initMap = () => {
   map.setView({
     lat: INIT_LAT,
@@ -82,22 +90,14 @@ const initMap = () => {
       attribution: MAP_ATTRIBUTE,
     },
   ).addTo(map);
+  map.whenReady(() => {
+    activateForm();
+    mainPinMarker.addTo(map);
+    mainPinMarker.on('move', onMarkerMove);
+    getData(onDataLoadSuccess, onDataLoadError);
+  });
+
   setAddress();
 };
-
-map.on('load', () => {
-  activateForm();
-  mainPinMarker.addTo(map);
-  mainPinMarker.on('move', onMarkerMove);
-  getData(
-    (data) => {
-      renderPins(data.slice(0, 10));
-      activateFilters();
-    },
-    () => {
-      showAlert('Не удалось загрузить данные');
-    }
-  );
-});
 
 export { initMap, renderPins, resetMainPinMarker, setAddress };

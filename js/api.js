@@ -1,12 +1,17 @@
-const getData = async (onSuccess, onFail) => {
+const API_URL = 'https://26.javascript.pages.academy/keksobooking';
+const ALERT_DOWNLOAD = 'Не удалось загрузить данные;';
+const ALERT_UPLOAD = 'Не удалось отправить объявление. Попробуйте ещё раз.';
 
+const getData = async (onSuccess, onFail) => {
   try {
     const response = await fetch(
-      'https://26.javascript.pages.academy/keksobooking/data'
+      `${API_URL  }/data`
     );
+
     if (!response.ok) {
-      throw new Error('Не удалось загрузить объявления');
+      throw new Error(ALERT_DOWNLOAD);
     }
+
     const data = await response.json();
     onSuccess(data);
   } catch (error) {
@@ -17,18 +22,18 @@ const getData = async (onSuccess, onFail) => {
 const sendData = async (onSuccess, onFail, body) => {
   try {
     const response = await fetch(
-      'https://26.javascript.pages.academy/keksobooking',
+      API_URL,
       {
         method: 'POST',
         body,
       },
     );
+
     if (!response.ok) {
-      throw new Error('Не удалось отправить объявление. Попробуйте ещё раз.');
+      throw new Error(ALERT_UPLOAD);
     }
 
     onSuccess();
-
   } catch (error) {
     onFail(error.message);
   }

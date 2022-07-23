@@ -125,39 +125,29 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать';
 };
 
-const onSuccessEscKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeSuccessMessage();
+const renderMessage = (template) => {
+  const node = template.cloneNode(true);
+  document.body.append(node);
+
+  const closeMessage = () => {
+    node.remove();
+    document.removeEventListener('keydown', onEscKeyDown);
+  };
+
+  function onEscKeyDown(evt) {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      closeMessage();
+    }
   }
+
+  node.addEventListener('click', () => closeMessage());
+  document.addEventListener('keydown', onEscKeyDown);
 };
 
-const onErrorEscKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeErrorMessage();
-  }
-};
+const showSuccessMessage = () => renderMessage(success);
 
-const showSuccessMessage = () => {
-  document.body.append(success);
-  document.addEventListener('click', () => { closeSuccessMessage(success); });
-  document.addEventListener('keydown', onSuccessEscKeydown);
-};
-
-const showErrorMessage = () => {
-  document.body.append(error);
-  document.addEventListener('click', () => { closeErrorMessage(error); });
-  document.addEventListener('keydown', onErrorEscKeydown);
-};
-
-function closeSuccessMessage() {
-  success.remove();
-}
-
-function closeErrorMessage() {
-  error.remove();
-}
+const showErrorMessage = () => renderMessage(error);
 
 const formReset = () => {
   adForm.reset();
