@@ -1,4 +1,5 @@
 const ALERT_SHOW_TIME = 7000;
+const RERENDER_DELAY = 500;
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
@@ -24,4 +25,26 @@ const showAlert = (message) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export { showAlert, isEscapeKey };
+function debounce (callback, timeoutDelay = RERENDER_DELAY) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+function throttle (callback, delayBetweenFrames) {
+  let lastTime = 0;
+
+  return (...rest) => {
+    const now = new Date();
+
+    if (now - lastTime >= delayBetweenFrames) {
+      callback.apply(this, rest);
+      lastTime = now;
+    }
+  };
+}
+
+export { showAlert, isEscapeKey, debounce, throttle };
