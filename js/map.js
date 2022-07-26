@@ -2,7 +2,7 @@ import { activateForm, activateFilters } from './form.js';
 import { renderCard } from './card.js';
 import { getData } from './api.js';
 import { showAlert } from './util.js';
-import { filterAds } from './filters.js';
+import { initFilter } from './filters.js';
 
 const addressField = document.querySelector('#address');
 const ZOOM_INDEX = 12;
@@ -70,6 +70,20 @@ const resetMainPinMarker = () => {
   mainPinMarker.setLatLng([INIT_LAT, INIT_LNG]);
 };
 
+const setMap = () => {
+  map.setView({
+    lat: INIT_LAT,
+    lng: INIT_LNG,
+  }, ZOOM_INDEX);
+
+};
+
+const resetMap = () => {
+  setMap();
+  setAddress();
+  resetMainPinMarker();
+};
+
 const onMarkerMove = (evt) => {
   const { lat, lng } = evt.target.getLatLng();
   addressField.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
@@ -78,7 +92,7 @@ const onMarkerMove = (evt) => {
 const onDataLoadSuccess = (data) => {
   renderPins(data.slice(0, ADS_COUNT));
   activateFilters();
-  filterAds(data);
+  initFilter(data);
 };
 
 const onDataLoadError = () => showAlert(ALERT_DOWNLOAD);
@@ -104,4 +118,4 @@ const initMap = () => {
   setAddress();
 };
 
-export { initMap, renderPins, resetMainPinMarker, setAddress, clearPins };
+export { initMap, renderPins, resetMap, clearPins };

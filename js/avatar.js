@@ -29,3 +29,11 @@ adPhotoChooser.addEventListener('change', () => {
     adPhotoPreview.appendChild(adPhoto);
   }
 });
+
+
+const resetPreview = () => {
+  avatarPreview.src = 'img/muffin-grey.svg';
+  adPhotoPreview.innerHtml = '';
+};
+
+export { resetPreview };

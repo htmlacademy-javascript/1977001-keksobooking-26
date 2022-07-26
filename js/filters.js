@@ -3,19 +3,17 @@ import { clearPins, renderPins } from './map.js';
 
 const FILTER_DEFAULT = 'any';
 const ADS_COUNT = 10;
-const RERENDER_DELAY = 500;
-
 
 const Price = {
   MEDIUM: 10000,
   HIGH: 50000,
 };
 
-const filterField = document.querySelector('.map__filters');
-const typeInput = filterField.querySelector('#housing-type');
-const roomsInput = filterField.querySelector('#housing-rooms');
-const guestsInput = filterField.querySelector('#housing-guests');
-const priceInput = filterField.querySelector('#housing-price');
+const filterForm = document.querySelector('.map__filters');
+const typeInput = filterForm.querySelector('#housing-type');
+const roomsInput = filterForm.querySelector('#housing-rooms');
+const guestsInput = filterForm.querySelector('#housing-guests');
+const priceInput = filterForm.querySelector('#housing-price');
 
 const typeFilter = (ad, type) => type === FILTER_DEFAULT || type === ad.offer.type;
 
@@ -37,44 +35,45 @@ const priceFilter = (ad, price) => {
 };
 
 const featuresFilter = (ad, selectedFeatures) => {
+  if (!selectedFeatures.length) {
+    return true;
+  }
+
   if (ad.offer.features) {
     return Array.from(selectedFeatures).every((element) => !ad.offer.features.includes(element.value));
   }
   return false;
 };
 
-const getFilteredAds = (data) => {
+const filterAds = (data) => {
   const selectedType = typeInput.value;
   const selectedRooms = roomsInput.value;
   const selectedGuests = guestsInput.value;
   const selectedPrice = priceInput.value;
-  const selectedFeatures = Array.from(filterField.querySelectorAll('input[type="checkbox"]:checked'));
+  const selectedFeatures = Array.from(filterForm.querySelectorAll('input[type="checkbox"]:checked'));
 
-  const ads = [];
-
-  data.forEach((ad) => {
-    const hasMatch = typeFilter(ad, selectedType)
+  return data
+    .filter((ad) => {
+      const hasMatch = typeFilter(ad, selectedType)
       && roomsFilter(ad, selectedRooms)
       && guestsFilter(ad, selectedGuests)
       && priceFilter(ad, selectedPrice)
       && featuresFilter(ad, selectedFeatures);
 
-    if (hasMatch && ads.length < ADS_COUNT) {
-      ads.push(ad);
-    }
-
-  });
-  return ads;
+      return hasMatch;
+    })
+    .slice(0, ADS_COUNT);
 };
 
 const onFilterChange = (data) => {
   clearPins();
-  const matchedAds = getFilteredAds(data);
+  const matchedAds = filterAds(data);
   renderPins(matchedAds);
 };
 
-const filterAds = (data) => {
-  filterField.addEventListener('change', debounce(() => onFilterChange(data), RERENDER_DELAY));
+const initFilter = (data) => {
+  filterForm.addEventListener('change', debounce(() => onFilterChange(data)));
+  filterForm.addEventListener('reset', debounce(() => onFilterChange(data)));
 };
 
-export { filterAds };
+export { initFilter };

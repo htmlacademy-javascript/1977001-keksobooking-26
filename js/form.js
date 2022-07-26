@@ -1,7 +1,8 @@
 import { sendData } from './api.js';
-import { setAddress, resetMainPinMarker } from './map.js';
+import { resetMap } from './map.js';
 import { addSlider } from './slider.js';
 import { isEscapeKey } from './util.js';
+import { resetPreview } from './avatar.js';
 
 const adForm = document.querySelector('.ad-form');
 const adFormElements = document.querySelectorAll('.ad-form fieldset');
@@ -149,15 +150,16 @@ const showSuccessMessage = () => renderMessage(success);
 
 const showErrorMessage = () => renderMessage(error);
 
-const formReset = () => {
+const resetState = () => {
   adForm.reset();
-  resetMainPinMarker();
-  setAddress();
+  mapFilters.reset();
+  resetMap();
+  resetPreview();
 };
 
 resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
-  formReset();
+  resetState();
 });
 
 const onFormSubmit = (evt) => {
@@ -171,7 +173,7 @@ const onFormSubmit = (evt) => {
     const onDataSendSuccess = () => {
       showSuccessMessage();
       unblockSubmitButton();
-      formReset();
+      resetState();
     };
 
     const onDataSendError = () => {
