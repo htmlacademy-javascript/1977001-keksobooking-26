@@ -164,20 +164,22 @@ const onFormSubmit = (evt) => {
   evt.preventDefault();
   const formData = new FormData(evt.target);
   const isValid = pristine.validate();
+
   if (isValid) {
     blockSubmitButton();
-    sendData(
-      () => {
-        showSuccessMessage();
-        unblockSubmitButton();
-        formReset();
-      },
-      () => {
-        showErrorMessage();
-        unblockSubmitButton();
-      },
-      formData
-    );
+
+    const onDataSendSuccess = () => {
+      showSuccessMessage();
+      unblockSubmitButton();
+      formReset();
+    };
+
+    const onDataSendError = () => {
+      showErrorMessage();
+      unblockSubmitButton();
+    };
+
+    sendData(onDataSendSuccess, onDataSendError, formData);
   }
 };
 

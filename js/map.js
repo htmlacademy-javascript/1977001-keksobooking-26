@@ -2,9 +2,9 @@ import { activateForm, activateFilters } from './form.js';
 import { renderCard } from './card.js';
 import { getData } from './api.js';
 import { showAlert } from './util.js';
+import { filterAds } from './filters.js';
 
 const addressField = document.querySelector('#address');
-
 const ZOOM_INDEX = 12;
 const INIT_LAT = 35.68172;
 const INIT_LNG = 139.75392;
@@ -13,8 +13,10 @@ const PIN_SIZE = 40;
 const MAP_TILE = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const MAP_ATTRIBUTE = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 const ALERT_DOWNLOAD = 'Не удалось загрузить данные;';
+const ADS_COUNT = 10;
 
 const map = L.map('map-canvas');
+const mapLayer = L.layerGroup().addTo(map);
 
 const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
@@ -50,13 +52,15 @@ const renderPin = (lat, lng, info) => {
     }
   );
   marker
-    .addTo(map)
+    .addTo(mapLayer)
     .bindPopup(info);
 };
 
 const renderPins = (pins) => {
   pins.forEach((pin) => renderPin(pin.location.lat, pin.location.lng, renderCard(pin)));
 };
+
+const clearPins = () => mapLayer.clearLayers();
 
 const setAddress = () => {
   addressField.value = `${INIT_LAT}, ${INIT_LNG}`;
@@ -72,8 +76,9 @@ const onMarkerMove = (evt) => {
 };
 
 const onDataLoadSuccess = (data) => {
-  renderPins(data.slice(0, 10));
+  renderPins(data.slice(0, ADS_COUNT));
   activateFilters();
+  filterAds(data);
 };
 
 const onDataLoadError = () => showAlert(ALERT_DOWNLOAD);
@@ -96,8 +101,7 @@ const initMap = () => {
     mainPinMarker.on('move', onMarkerMove);
     getData(onDataLoadSuccess, onDataLoadError);
   });
-
   setAddress();
 };
 
-export { initMap, renderPins, resetMainPinMarker, setAddress };
+export { initMap, renderPins, resetMainPinMarker, setAddress, clearPins };
