@@ -4,7 +4,6 @@ import { getData } from './api.js';
 import { showAlert } from './util.js';
 import { initFilter } from './filters.js';
 
-const addressField = document.querySelector('#address');
 const ZOOM_INDEX = 12;
 const INIT_LAT = 35.68172;
 const INIT_LNG = 139.75392;
@@ -14,6 +13,8 @@ const MAP_TILE = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const MAP_ATTRIBUTE = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 const ALERT_DOWNLOAD = 'Не удалось загрузить данные;';
 const ADS_COUNT = 10;
+
+const addressField = document.querySelector('#address');
 
 const map = L.map('map-canvas');
 const mapLayer = L.layerGroup().addTo(map);

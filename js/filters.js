@@ -53,15 +53,11 @@ const filterAds = (data) => {
   const selectedFeatures = Array.from(filterForm.querySelectorAll('input[type="checkbox"]:checked'));
 
   return data
-    .filter((ad) => {
-      const hasMatch = typeFilter(ad, selectedType)
+    .filter((ad) => typeFilter(ad, selectedType)
       && roomsFilter(ad, selectedRooms)
       && guestsFilter(ad, selectedGuests)
       && priceFilter(ad, selectedPrice)
-      && featuresFilter(ad, selectedFeatures);
-
-      return hasMatch;
-    })
+      && featuresFilter(ad, selectedFeatures))
     .slice(0, ADS_COUNT);
 };
 
