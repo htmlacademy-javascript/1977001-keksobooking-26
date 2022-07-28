@@ -1,23 +1,23 @@
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-const avatarChooser = document.querySelector('.ad-form-header__input');
-const avatarPreview = document.querySelector('.ad-form-header__preview img');
-const adPhotoChooser = document.querySelector('.ad-form__input');
-const adPhotoPreview = document.querySelector('.ad-form__photo');
+const avatarInput = document.querySelector('.ad-form-header__input');
+const avatarPreviewField = document.querySelector('.ad-form-header__preview img');
+const photoInput = document.querySelector('.ad-form__input');
+const photoPreviewField = document.querySelector('.ad-form__photo');
 
-avatarChooser.addEventListener('change', () => {
-  const file = avatarChooser.files[0];
+avatarInput.addEventListener('change', () => {
+  const file = avatarInput.files[0];
   const fileName = file.name.toLowerCase();
 
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
   if (matches) {
-    avatarPreview.src = URL.createObjectURL(file);
+    avatarPreviewField.src = URL.createObjectURL(file);
   }
 });
 
-adPhotoChooser.addEventListener('change', () => {
-  const file = adPhotoChooser.files[0];
+photoInput.addEventListener('change', () => {
+  const file = photoInput.files[0];
   const fileName = file.name.toLowerCase();
 
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
@@ -26,14 +26,13 @@ adPhotoChooser.addEventListener('change', () => {
     const adPhoto = document.createElement('img');
     adPhoto.style.height = '100%';
     adPhoto.src = URL.createObjectURL(file);
-    adPhotoPreview.appendChild(adPhoto);
+    photoPreviewField.appendChild(adPhoto);
   }
 });
 
-
 const resetPreview = () => {
-  avatarPreview.src = 'img/muffin-grey.svg';
-  adPhotoPreview.innerHtml = '';
+  avatarPreviewField.src = 'img/muffin-grey.svg';
+  photoPreviewField.innerHTML = '';
 };
 
 export { resetPreview };
